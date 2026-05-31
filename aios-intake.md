@@ -58,7 +58,7 @@ Don't think of this as good or bad — it's just a way to help celebrate what yo
 
 ## Q5 — Where do you talk to people day-to-day?
 
-Email, messaging, phone, in person — and how do you enjoy connecting? Some people love a quick voice note. Others prefer a thoughtful email. There's no wrong answer.
+Email, text, iMessage, WhatsApp, in person — what does your daily communication look like? And the second part matters too: do you prefer a quick voice note, a thoughtful written message, a call? How do you like to connect?
 
 ```
 [Your communication tools and how you like to connect]
