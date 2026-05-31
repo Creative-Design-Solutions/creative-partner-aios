@@ -66,15 +66,52 @@ Once the intake is complete, generate these files (or update if re-running). Bac
 5. **`connections.md`** — populate the 7-row table from Q4-Q7 answers. Each row gets `mechanism: not yet connected`, `auth: —`, `last checked: —`. The user wires connections on Day 2.
 6. **`CLAUDE.md`** — fill all `{{...}}` placeholders. Substitute the user's name, stated priority, voice register summary, and a brief connections summary.
 
+### Step 3b: Generate your-skills.md
+
+After scaffolding, read Q1, Q3, and Q7 and determine which skill tiers apply. Then write `references/your-skills.md` — their personalized quick reference.
+
+**Skill tiers — assign based on intake signals:**
+
+| Tier | Signals from intake | Skills to highlight |
+|---|---|---|
+| Universal | Everyone | `/morning-coffee`, `/snag`, `/audit`, `/level-up`, `/smooth-operator`, `/skill-builder`, `/file-organizer`, `/meeting-insights-analyzer` |
+| Creative | Q1 mentions design, writing, art, music, content, storytelling, brand, photography, food, cooking, hospitality | `/designer`, `/design-master`, `/canvas-design`, `/content-research-writer`, `/theme-factory`, `/brainstorming` |
+| Business | Q1/Q4 mentions clients, invoicing, admin, office, proposals, reports, team comms | `/invoice-organizer`, `/internal-comms`, `/document-skills` (Word/PDF/Excel/PowerPoint) |
+| Builder | Q1/Q3/Q7 mentions building apps, coding, development, websites, automation, systems | `/systematic-debugging`, `/writing-plans`, `/executing-plans`, `/verification-before-completion`, `/frontend-design`, `/webapp-testing`, `/mcp-builder` |
+
+Assign all tiers that fit — most people get Universal + 1 or 2 others. Someone can be Creative AND Builder.
+
+**Write `references/your-skills.md` in this format:**
+
+```markdown
+# Your Skills — [Name]
+
+These are the skills most relevant to how you work. Type any of them in Claude Code to activate.
+
+## Your everyday skills
+[Universal skills — short description + trigger for each]
+
+## Your [Creative / Business / Builder] skills
+[Tier-specific skills — short description + trigger for each]
+
+---
+
+## Full library
+Your AIOS has [total count] skills installed. As you grow, explore them in `.claude/skills/`.
+A full reference is in `references/skills-guide.md`.
+```
+
+Keep descriptions warm and plain — no jargon. Write them the way you'd explain a skill to a friend.
+
 ### Step 4: The closing screen
 
 Print one screen. Three lines max:
 
 ```
-✓ Day 1 done. Your AIOS knows who you are, what you sell, what matters this quarter, and how you sound.
+✓ Day 1 done. Your AIOS knows who you are, what matters this season, and how you sound.
 
+Your personal skill guide is in references/your-skills.md — start there.
 Today: ask me — "what should I focus on this week?"
-Tomorrow: pick one tool from connections.md and wire it up (manual MCP install or write a small API script + save references/{tool}-api.md).
 Day 7: run /audit to see your score.
 ```
 
@@ -98,8 +135,8 @@ The Default Shift question seeds the Mindset framework before `/level-up` formal
 
 ## Verification (for the implementer)
 
-- Cold-test: clone a fresh kit, run `/onboard`, fill 7 answers, scaffold runs, ask the wow prompt, response cites Q1 + Q3 + Q7 specifically. Generic = fail.
-- Idempotency: re-run `/onboard` with one Q3 priority changed. Expected: only `context/priorities.md` and `CLAUDE.md`'s priority section update; backup created in `archives/intake-{ts}/`.
+- Cold-test: clone a fresh kit, run `/welcome`, fill 7 answers, scaffold runs, ask the wow prompt, response cites Q1 + Q3 + Q7 specifically. Generic = fail.
+- Idempotency: re-run `/welcome` with one Q3 priority changed. Expected: only `context/priorities.md` and `CLAUDE.md`'s priority section update; backup created in `archives/intake-{ts}/`.
 - Voice rejection: type a sample mid-chat. Expected: skill refuses, asks for paste.
 
 > *Adapted from The Three Ms of AI™ © 2026 Nate Herk. The Mindset language used in the closing screen comes from `references/3ms-framework.md`.*
