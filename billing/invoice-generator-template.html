@@ -1,0 +1,697 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Invoice Generator · {{CLIENT_BUSINESS}}</title>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+    /* ── Brand tokens — injected by onboard agent ── */
+    :root {
+      --brand-primary:   {{COLOR_PRIMARY}};
+      --brand-secondary: {{COLOR_SECONDARY}};
+      --brand-accent:    {{COLOR_ACCENT}};
+      --brand-bg:        {{COLOR_BG}};
+      --brand-text:      {{COLOR_TEXT}};
+      --brand-muted:     {{COLOR_MUTED}};
+      --brand-line:      {{COLOR_LINE}};
+    }
+
+    body {
+      font-family: "Inter", sans-serif;
+      background: #f0f4f8;
+      min-height: 100vh;
+      color: #1e293b;
+    }
+
+    .shell {
+      display: grid;
+      grid-template-columns: 380px 1fr;
+      min-height: 100vh;
+    }
+
+    /* ── Sidebar ── */
+    .sidebar {
+      background: var(--brand-primary);
+      padding: 36px 28px 48px;
+      display: flex;
+      flex-direction: column;
+      position: sticky;
+      top: 0;
+      height: 100vh;
+      overflow-y: auto;
+    }
+
+    .sidebar-brand {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 32px;
+      padding-bottom: 24px;
+      border-bottom: 1px solid rgba(255,255,255,0.12);
+    }
+
+    .sidebar-brand img {
+      width: 44px; height: 44px;
+      border-radius: 10px;
+      object-fit: cover;
+    }
+
+    .sidebar-brand-name {
+      font-family: "Playfair Display", serif;
+      font-size: 0.95rem;
+      font-weight: 600;
+      color: #fff;
+      line-height: 1.2;
+    }
+
+    .sidebar-brand-sub {
+      font-size: 0.65rem;
+      color: rgba(255,255,255,0.38);
+      margin-top: 2px;
+    }
+
+    .form-section { margin-bottom: 28px; }
+
+    .form-section-title {
+      font-size: 0.58rem;
+      font-weight: 700;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      color: var(--brand-accent);
+      margin-bottom: 12px;
+    }
+
+    .field { margin-bottom: 11px; }
+
+    label {
+      display: block;
+      font-size: 0.68rem;
+      font-weight: 600;
+      color: rgba(255,255,255,0.45);
+      letter-spacing: 0.04em;
+      margin-bottom: 4px;
+      text-transform: uppercase;
+    }
+
+    input, textarea, select {
+      width: 100%;
+      background: rgba(255,255,255,0.06);
+      border: 1px solid rgba(255,255,255,0.1);
+      border-radius: 8px;
+      padding: 9px 12px;
+      font-family: "Inter", sans-serif;
+      font-size: 0.82rem;
+      color: #fff;
+      outline: none;
+      transition: border-color 0.15s;
+      -webkit-appearance: none;
+    }
+
+    input:focus, textarea:focus, select:focus {
+      border-color: rgba(255,255,255,0.35);
+    }
+
+    input::placeholder, textarea::placeholder { color: rgba(255,255,255,0.2); }
+    select option { background: #1e293b; }
+    textarea { resize: vertical; min-height: 62px; line-height: 1.5; }
+    .field-row { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+
+    /* Line items */
+    .line-item, .installment {
+      background: rgba(255,255,255,0.05);
+      border: 1px solid rgba(255,255,255,0.08);
+      border-radius: 10px;
+      padding: 12px;
+      position: relative;
+      margin-bottom: 10px;
+    }
+
+    .line-item-num {
+      font-size: 0.6rem;
+      font-weight: 700;
+      color: rgba(255,255,255,0.3);
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      margin-bottom: 8px;
+    }
+
+    .remove-line {
+      position: absolute;
+      top: 10px; right: 10px;
+      background: none; border: none;
+      color: rgba(255,255,255,0.2);
+      cursor: pointer;
+      font-size: 1rem;
+      padding: 2px 5px;
+      border-radius: 4px;
+      transition: color 0.15s;
+    }
+    .remove-line:hover { color: #f87171; }
+
+    .add-line-btn {
+      display: flex;
+      align-items: center;
+      gap: 7px;
+      background: none;
+      border: 1px dashed rgba(255,255,255,0.18);
+      border-radius: 8px;
+      padding: 9px 14px;
+      color: rgba(255,255,255,0.4);
+      font-family: "Inter", sans-serif;
+      font-size: 0.75rem;
+      font-weight: 600;
+      cursor: pointer;
+      width: 100%;
+      transition: all 0.15s;
+      margin-top: 4px;
+    }
+    .add-line-btn:hover {
+      border-color: rgba(255,255,255,0.35);
+      color: rgba(255,255,255,0.7);
+    }
+
+    .generate-btn {
+      width: 100%;
+      background: var(--brand-accent);
+      color: var(--brand-primary);
+      border: none;
+      border-radius: 12px;
+      padding: 14px 20px;
+      font-family: "Inter", sans-serif;
+      font-size: 0.88rem;
+      font-weight: 700;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      margin-top: 8px;
+      letter-spacing: 0.02em;
+      transition: opacity 0.15s, transform 0.1s;
+    }
+    .generate-btn:hover { opacity: 0.9; transform: translateY(-1px); }
+
+    /* Preview panel */
+    .preview-panel {
+      background: #e8edf3;
+      padding: 32px 40px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    .preview-toolbar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      width: 100%;
+      max-width: 840px;
+      margin-bottom: 20px;
+    }
+
+    .preview-label {
+      font-size: 0.68rem;
+      font-weight: 700;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: #94a3b8;
+    }
+
+    .toolbar-actions { display: flex; gap: 8px; }
+
+    .toolbar-btn {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      padding: 8px 16px;
+      border-radius: 8px;
+      font-family: "Inter", sans-serif;
+      font-size: 0.75rem;
+      font-weight: 600;
+      cursor: pointer;
+      border: none;
+      transition: all 0.15s;
+    }
+    .toolbar-btn-primary { background: var(--brand-secondary); color: #fff; }
+    .toolbar-btn-ghost { background: #fff; color: #475569; border: 1px solid #e2e8f0; }
+    .toolbar-btn-ghost:hover { background: #f8fafc; }
+
+    .invoice-frame {
+      width: 100%;
+      max-width: 840px;
+      background: var(--brand-bg);
+      border-radius: 12px;
+      box-shadow: 0 8px 40px rgba(0,0,0,0.12);
+      overflow: hidden;
+    }
+
+    /* ── Invoice preview styles ── */
+    .inv { padding: 48px 56px 72px; font-family: "Inter", sans-serif; color: var(--brand-text); line-height: 1.6; }
+    .inv-top { display:flex; justify-content:space-between; align-items:flex-start; margin-bottom:28px; }
+    .inv-brand { display:flex; align-items:center; gap:13px; }
+    .inv-brand img { width:64px; height:64px; border-radius:12px; object-fit:cover; box-shadow:0 4px 16px rgba(0,0,0,0.15); }
+    .inv-wordmark { font-family:"Playfair Display",serif; font-size:1.05rem; font-weight:600; line-height:1.2; color:var(--brand-text); }
+    .inv-tagline { font-size:0.68rem; color:var(--brand-muted); margin-top:3px; }
+    .inv-title-block { text-align:right; }
+    .inv-title-block h1 { font-family:"Playfair Display",serif; font-size:2.4rem; font-weight:700; letter-spacing:-0.03em; line-height:1; color:var(--brand-text); }
+    .inv-number { font-size:0.7rem; font-weight:700; letter-spacing:0.18em; text-transform:uppercase; color:var(--brand-accent); margin-top:4px; }
+    .brand-rule { height:3px; border-radius:2px; margin-bottom:28px; background: linear-gradient(90deg, var(--brand-accent), var(--brand-secondary), transparent); }
+    .inv-meta { display:grid; grid-template-columns:repeat(4,1fr); background:var(--brand-secondary); border-radius:10px; overflow:hidden; margin-bottom:24px; }
+    .inv-meta-cell { padding:13px 16px; border-right:1px solid rgba(255,255,255,0.2); }
+    .inv-meta-cell:last-child { border-right:none; }
+    .inv-meta-label { font-size:0.58rem; font-weight:700; letter-spacing:0.15em; text-transform:uppercase; color:rgba(255,255,255,0.65); margin-bottom:3px; }
+    .inv-meta-value { font-size:0.88rem; font-weight:600; color:#fff; }
+    .inv-parties { display:grid; grid-template-columns:1fr 1fr; border:1px solid var(--brand-line); border-radius:10px; overflow:hidden; margin-bottom:28px; }
+    .inv-party { padding:20px 22px; }
+    .inv-party:first-child { background:var(--brand-bg); filter:brightness(0.97); border-right:1px solid var(--brand-line); }
+    .inv-party:last-child { background:#fff; }
+    .inv-party h3 { font-size:0.58rem; font-weight:700; letter-spacing:0.18em; text-transform:uppercase; color:var(--brand-accent); margin-bottom:9px; }
+    .inv-party p { font-size:0.84rem; line-height:1.75; color:var(--brand-text); }
+    .inv-party .sub { font-size:0.78rem; color:var(--brand-muted); margin-top:5px; }
+    .inv-table { width:100%; border-collapse:collapse; border:1px solid var(--brand-line); border-radius:10px; overflow:hidden; margin-bottom:24px; }
+    .inv-table thead tr { background:var(--brand-secondary); }
+    .inv-table thead th { padding:12px 16px; font-size:0.62rem; font-weight:700; letter-spacing:0.14em; text-transform:uppercase; color:rgba(255,255,255,0.9); text-align:left; }
+    .inv-table thead th:last-child { text-align:right; }
+    .inv-table tbody tr:nth-child(odd) { background:#fff; }
+    .inv-table tbody tr:nth-child(even) { background:var(--brand-bg); }
+    .inv-table tbody tr { border-bottom:1px solid var(--brand-line); }
+    .inv-table tbody tr:last-child { border-bottom:none; }
+    .inv-table td { padding:14px 16px; font-size:0.84rem; vertical-align:top; color:var(--brand-text); }
+    .inv-table td:last-child { text-align:right; font-weight:600; white-space:nowrap; }
+    .svc-name { font-weight:600; margin-bottom:3px; }
+    .svc-desc { font-size:0.74rem; color:var(--brand-muted); line-height:1.5; }
+    .inv-totals { display:flex; justify-content:flex-end; margin-bottom:28px; }
+    .totals-block { width:280px; border:1px solid var(--brand-line); border-radius:10px; overflow:hidden; }
+    .total-row { display:flex; justify-content:space-between; padding:9px 16px; font-size:0.84rem; border-bottom:1px solid var(--brand-line); background:#fff; }
+    .total-row:last-child { border-bottom:none; border-top:1.5px solid var(--brand-accent); background:var(--brand-bg); padding:12px 16px; }
+    .total-row span:first-child { color:var(--brand-muted); }
+    .total-row.grand span:first-child { font-family:"Playfair Display",serif; font-size:0.95rem; font-weight:600; color:var(--brand-text); }
+    .total-row.grand span:last-child { font-family:"Playfair Display",serif; font-size:1.1rem; font-weight:700; color:var(--brand-accent); }
+    .inv-section-heading { font-size:0.6rem; font-weight:700; letter-spacing:0.18em; text-transform:uppercase; color:var(--brand-accent); margin-bottom:12px; }
+    .payment-schedule { display:flex; flex-direction:column; gap:7px; margin-bottom:28px; }
+    .ps-row { display:flex; justify-content:space-between; align-items:center; padding:11px 16px; background:#fff; border:1px solid var(--brand-line); border-radius:8px; font-size:0.84rem; }
+    .ps-left { display:flex; align-items:center; gap:10px; }
+    .ps-num { width:24px; height:24px; border-radius:50%; background:var(--brand-bg); border:1.5px solid var(--brand-accent); color:var(--brand-accent); font-size:0.65rem; font-weight:700; display:flex; align-items:center; justify-content:center; flex-shrink:0; }
+    .ps-label { font-weight:500; }
+    .ps-date { font-size:0.74rem; color:var(--brand-muted); }
+    .ps-amount { font-weight:700; }
+    .pay-methods { display:grid; grid-template-columns:repeat(auto-fit, minmax(140px,1fr)); gap:10px; margin-bottom:36px; }
+    .pay-method { background:#fff; border:1px solid var(--brand-line); border-radius:8px; padding:14px; }
+    .pay-method h4 { font-size:0.6rem; font-weight:700; letter-spacing:0.12em; text-transform:uppercase; margin-bottom:5px; color:var(--brand-muted); }
+    .pay-method p { font-size:0.78rem; line-height:1.55; color:var(--brand-text); }
+    .pay-method .pay-val { font-weight:600; }
+    .pay-method img { width:80px; height:80px; display:block; margin:6px 0; }
+    .inv-footer { border-top:1px solid var(--brand-line); padding-top:20px; display:flex; justify-content:space-between; align-items:flex-end; }
+    .inv-footer p { font-size:0.72rem; color:var(--brand-muted); line-height:1.7; }
+    .inv-thankyou { font-family:"Playfair Display",serif; font-size:1rem; font-style:italic; color:var(--brand-accent); }
+
+    .sidebar::-webkit-scrollbar { width: 4px; }
+    .sidebar::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.1); border-radius: 2px; }
+
+    @media (max-width: 900px) {
+      .shell { grid-template-columns: 1fr; }
+      .sidebar { position: static; height: auto; }
+      .preview-panel { padding: 24px 16px; }
+      .inv { padding: 28px 24px 48px; }
+    }
+    @media print { #toolbar, .sidebar { display: none !important; } .preview-panel { padding: 0; background: #fff; } .invoice-frame { box-shadow: none; border-radius: 0; } }
+  </style>
+</head>
+<body>
+<div class="shell">
+
+  <!-- ══ SIDEBAR ══ -->
+  <aside class="sidebar">
+    <div class="sidebar-brand">
+      <img id="sidebar-logo" src="{{LOGO_DATA_URI}}" alt="{{CLIENT_BUSINESS}}">
+      <div>
+        <div class="sidebar-brand-name">{{CLIENT_BUSINESS}}</div>
+        <div class="sidebar-brand-sub">Invoice Generator</div>
+      </div>
+    </div>
+
+    <div class="form-section">
+      <div class="form-section-title">Invoice Info</div>
+      <div class="field-row">
+        <div class="field"><label>Invoice #</label><input type="text" id="inv-number" placeholder="INV-001" oninput="render()"></div>
+        <div class="field"><label>Currency</label>
+          <select id="inv-currency" onchange="render()">
+            <option value="USD">USD</option><option value="AUD">AUD</option>
+            <option value="CAD">CAD</option><option value="GBP">GBP</option><option value="EUR">EUR</option>
+          </select>
+        </div>
+      </div>
+      <div class="field-row">
+        <div class="field"><label>Invoice Date</label><input type="date" id="inv-date" oninput="render()"></div>
+        <div class="field"><label>Service From</label><input type="date" id="inv-service-from" oninput="render()"></div>
+      </div>
+      <div class="field"><label>Terms</label>
+        <select id="inv-terms" onchange="render()">
+          <option>Net 30</option><option>Net 15</option><option>Net 60</option><option>Due on Receipt</option>
+        </select>
+      </div>
+    </div>
+
+    <div class="form-section">
+      <div class="form-section-title">Bill To</div>
+      <div class="field"><label>Name</label><input type="text" id="client-name" placeholder="Client name" oninput="render()"></div>
+      <div class="field"><label>Business</label><input type="text" id="client-business" placeholder="Company name" oninput="render()"></div>
+      <div class="field"><label>Location</label><input type="text" id="client-location" placeholder="City, State, Country" oninput="render()"></div>
+    </div>
+
+    <div class="form-section">
+      <div class="form-section-title">Services</div>
+      <div id="line-items"></div>
+      <button class="add-line-btn" onclick="addLine()">
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+        Add Service
+      </button>
+    </div>
+
+    <div class="form-section">
+      <div class="form-section-title">Payment Schedule</div>
+      <div id="installments"></div>
+      <button class="add-line-btn" onclick="addInstallment()">
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+        Add Installment
+      </button>
+    </div>
+
+    <div class="form-section">
+      <div class="form-section-title">Footer</div>
+      <div class="field"><label>Thank You Message</label><input type="text" id="thankyou" placeholder="Thank you." oninput="render()"></div>
+    </div>
+
+    <button class="generate-btn" onclick="exportInvoice()">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+      Export Invoice
+    </button>
+  </aside>
+
+  <!-- ══ PREVIEW ══ -->
+  <main class="preview-panel">
+    <div class="preview-toolbar" id="toolbar">
+      <span class="preview-label">Live Preview</span>
+      <div class="toolbar-actions">
+        <button class="toolbar-btn toolbar-btn-ghost" onclick="window.print()">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path stroke-linecap="round" stroke-linejoin="round" d="M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h2m2 4h6a2 2 0 002-2v-4a2 2 0 00-2-2H9a2 2 0 00-2 2v4a2 2 0 002 2zm8-12V5a2 2 0 00-2-2H9a2 2 0 00-2 2v4"/></svg>
+          Print / PDF
+        </button>
+        <button class="toolbar-btn toolbar-btn-primary" onclick="exportInvoice()">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+          Export HTML
+        </button>
+      </div>
+    </div>
+    <div class="invoice-frame">
+      <div class="inv" id="invoice-preview"></div>
+    </div>
+  </main>
+
+</div>
+
+<script>
+// ════════════════════════════════════════════════════════════════════════
+// CLIENT CONFIG — this block is swapped by the onboard-client agent
+// ════════════════════════════════════════════════════════════════════════
+const CLIENT = {
+  business:     "{{CLIENT_BUSINESS}}",
+  ownerName:    "{{OWNER_NAME}}",
+  tagline:      "{{TAGLINE}}",
+  address:      "{{ADDRESS}}",
+  email:        "{{EMAIL}}",
+  website:      "{{WEBSITE}}",
+  logo:         "{{LOGO_DATA_URI}}",
+
+  // Brand colors
+  colors: {
+    primary:   "{{COLOR_PRIMARY}}",
+    secondary: "{{COLOR_SECONDARY}}",
+    accent:    "{{COLOR_ACCENT}}",
+    bg:        "{{COLOR_BG}}",
+    text:      "{{COLOR_TEXT}}",
+    muted:     "{{COLOR_MUTED}}",
+    line:      "{{COLOR_LINE}}",
+  },
+
+  // Payment methods — add/remove as needed
+  paymentMethods: [
+    {{PAYMENT_METHODS}}
+  ],
+
+  // Default currency
+  defaultCurrency: "{{DEFAULT_CURRENCY}}",
+
+  // Default thank you
+  defaultThankyou: "{{DEFAULT_THANKYOU}}",
+};
+// ════════════════════════════════════════════════════════════════════════
+
+// Apply brand colors to CSS vars
+Object.entries(CLIENT.colors).forEach(([k, v]) => {
+  document.documentElement.style.setProperty("--brand-" + k, v);
+});
+
+// ── State ─────────────────────────────────────────────────────────────
+let lineCount = 0;
+let installmentCount = 0;
+
+// ── Init ──────────────────────────────────────────────────────────────
+document.addEventListener("DOMContentLoaded", () => {
+  const today = new Date().toISOString().split("T")[0];
+  document.getElementById("inv-date").value = today;
+
+  const d = new Date();
+  const firstOfMonth = new Date(d.getFullYear(), d.getMonth(), 1).toISOString().split("T")[0];
+  document.getElementById("inv-service-from").value = firstOfMonth;
+
+  const cyEl = document.getElementById("inv-currency");
+  if (CLIENT.defaultCurrency) cyEl.value = CLIENT.defaultCurrency;
+
+  const tyEl = document.getElementById("thankyou");
+  if (CLIENT.defaultThankyou) tyEl.placeholder = CLIENT.defaultThankyou;
+
+  addLine();
+  addInstallment();
+  render();
+});
+
+// ── Line items ────────────────────────────────────────────────────────
+function addLine() {
+  lineCount++;
+  const id = lineCount;
+  const div = document.createElement("div");
+  div.className = "line-item";
+  div.id = "line-" + id;
+  div.innerHTML = `
+    <div class="line-item-num">Service ${id}</div>
+    <button class="remove-line" onclick="removeLine(${id})">×</button>
+    <div class="field"><label>Name</label><input type="text" id="ln-name-${id}" placeholder="Service name" oninput="render()"></div>
+    <div class="field"><label>Description</label><textarea id="ln-desc-${id}" placeholder="Brief description..." oninput="render()"></textarea></div>
+    <div class="field-row">
+      <div class="field"><label>Period</label><input type="text" id="ln-period-${id}" placeholder="Jan – Mar 2026" oninput="render()"></div>
+      <div class="field"><label>Amount</label><input type="number" id="ln-amount-${id}" placeholder="0.00" min="0" step="0.01" oninput="render()"></div>
+    </div>`;
+  document.getElementById("line-items").appendChild(div);
+}
+
+function removeLine(id) {
+  const el = document.getElementById("line-" + id);
+  if (el) { el.remove(); render(); }
+}
+
+// ── Installments ──────────────────────────────────────────────────────
+function addInstallment() {
+  installmentCount++;
+  const id = installmentCount;
+  const div = document.createElement("div");
+  div.className = "installment";
+  div.id = "inst-" + id;
+  div.innerHTML = `
+    <div class="line-item-num">Installment ${id}</div>
+    <button class="remove-line" onclick="removeInstallment(${id})">×</button>
+    <div class="field-row">
+      <div class="field"><label>Label</label><input type="text" id="inst-label-${id}" placeholder="First Installment" oninput="render()"></div>
+      <div class="field"><label>Amount</label><input type="number" id="inst-amount-${id}" placeholder="0.00" min="0" step="0.01" oninput="render()"></div>
+    </div>
+    <div class="field"><label>Due Date</label><input type="date" id="inst-date-${id}" oninput="render()"></div>`;
+  document.getElementById("installments").appendChild(div);
+}
+
+function removeInstallment(id) {
+  const el = document.getElementById("inst-" + id);
+  if (el) { el.remove(); render(); }
+}
+
+// ── Helpers ───────────────────────────────────────────────────────────
+function val(id) {
+  const el = document.getElementById(id);
+  return el ? el.value.trim() : "";
+}
+
+function fmt(num, currency) {
+  const symbols = { USD:"$", AUD:"A$", CAD:"C$", GBP:"£", EUR:"€" };
+  return (symbols[currency]||"$") + parseFloat(num||0).toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g,",");
+}
+
+function fmtDate(str) {
+  if (!str) return "—";
+  return new Date(str + "T00:00:00").toLocaleDateString("en-US", { month:"long", day:"numeric", year:"numeric" });
+}
+
+function collectLines() {
+  const lines = [];
+  document.querySelectorAll(".line-item").forEach(el => {
+    const id = el.id.replace("line-","");
+    const name   = val("ln-name-" + id);
+    const desc   = val("ln-desc-" + id);
+    const period = val("ln-period-" + id);
+    const amount = parseFloat(document.getElementById("ln-amount-" + id)?.value || 0);
+    if (name || amount) lines.push({ name, desc, period, amount });
+  });
+  return lines;
+}
+
+function collectInstallments() {
+  const insts = [];
+  document.querySelectorAll(".installment").forEach((el, idx) => {
+    const id     = el.id.replace("inst-","");
+    const label  = val("inst-label-" + id) || ("Installment " + (idx+1));
+    const amount = parseFloat(document.getElementById("inst-amount-" + id)?.value || 0);
+    const date   = val("inst-date-" + id);
+    insts.push({ label, amount, date, num: idx+1 });
+  });
+  return insts;
+}
+
+// ── Render ────────────────────────────────────────────────────────────
+function render() {
+  const invNum   = val("inv-number") || "INV-XXX";
+  const currency = val("inv-currency") || CLIENT.defaultCurrency || "USD";
+  const invDate  = val("inv-date");
+  const svcFrom  = val("inv-service-from");
+  const terms    = val("inv-terms") || "Net 30";
+  const clientName = val("client-name") || "Client Name";
+  const clientBiz  = val("client-business");
+  const clientLoc  = val("client-location");
+  const thankyou   = val("thankyou") || CLIENT.defaultThankyou || "Thank you.";
+
+  const lines    = collectLines();
+  const insts    = collectInstallments();
+  const subtotal = lines.reduce((s,l) => s + l.amount, 0);
+
+  const serviceRows = lines.map(l => `
+    <tr>
+      <td><div class="svc-name">${l.name||"<em style='opacity:.4'>Unnamed</em>"}</div>${l.desc?`<div class="svc-desc">${l.desc}</div>`:""}</td>
+      <td style="font-size:0.78rem;color:var(--brand-muted);white-space:nowrap;">${l.period||"—"}</td>
+      <td>${fmt(l.amount,currency)}</td>
+    </tr>`).join("") || `<tr><td colspan="3" style="padding:20px;text-align:center;color:var(--brand-muted);font-size:0.8rem;">Add services on the left</td></tr>`;
+
+  const instRows = insts.map(i => `
+    <div class="ps-row">
+      <div class="ps-left"><div class="ps-num">${i.num}</div>
+        <div><div class="ps-label">${i.label}</div><div class="ps-date">Due ${fmtDate(i.date)}</div></div>
+      </div>
+      <div class="ps-amount">${fmt(i.amount,currency)}</div>
+    </div>`).join("");
+
+  const payRows = CLIENT.paymentMethods.map(p => `
+    <div class="pay-method">
+      <h4>${p.label}</h4>
+      ${p.qr ? `<img src="${p.qr}" alt="${p.label} QR">` : ""}
+      ${p.value ? `<p class="pay-val">${p.value}</p>` : ""}
+      ${p.note  ? `<p>${p.note}</p>` : ""}
+    </div>`).join("");
+
+  document.getElementById("invoice-preview").innerHTML = `
+    <div class="inv-top">
+      <div class="inv-brand">
+        <img src="${CLIENT.logo}" alt="${CLIENT.business}">
+        <div>
+          <div class="inv-wordmark">${CLIENT.business}</div>
+          <div class="inv-tagline">${CLIENT.tagline}</div>
+        </div>
+      </div>
+      <div class="inv-title-block"><h1>Invoice</h1><div class="inv-number">${invNum}</div></div>
+    </div>
+    <div class="brand-rule"></div>
+    <div class="inv-meta">
+      <div class="inv-meta-cell"><div class="inv-meta-label">Invoice Date</div><div class="inv-meta-value">${fmtDate(invDate)}</div></div>
+      <div class="inv-meta-cell"><div class="inv-meta-label">Service From</div><div class="inv-meta-value">${fmtDate(svcFrom)}</div></div>
+      <div class="inv-meta-cell"><div class="inv-meta-label">Terms</div><div class="inv-meta-value">${terms}</div></div>
+      <div class="inv-meta-cell"><div class="inv-meta-label">Currency</div><div class="inv-meta-value">${currency}</div></div>
+    </div>
+    <div class="inv-parties">
+      <div class="inv-party">
+        <h3>From</h3>
+        <p><strong>${CLIENT.ownerName}</strong><br>${CLIENT.business}<br>${CLIENT.address}</p>
+        <p class="sub">${CLIENT.email}${CLIENT.website ? "<br>" + CLIENT.website : ""}</p>
+      </div>
+      <div class="inv-party">
+        <h3>Bill To</h3>
+        <p><strong>${clientName}</strong>${clientBiz?"<br>"+clientBiz:""}${clientLoc?"<br>"+clientLoc:""}</p>
+      </div>
+    </div>
+    <table class="inv-table">
+      <thead><tr><th style="width:55%;">Service</th><th>Period</th><th>Amount</th></tr></thead>
+      <tbody>${serviceRows}</tbody>
+    </table>
+    <div class="inv-totals">
+      <div class="totals-block">
+        <div class="total-row"><span>Subtotal</span><span>${fmt(subtotal,currency)}</span></div>
+        <div class="total-row"><span>Tax</span><span>—</span></div>
+        <div class="total-row grand"><span>Total Due</span><span>${fmt(subtotal,currency)} ${currency}</span></div>
+      </div>
+    </div>
+    ${insts.length ? `<p class="inv-section-heading">Payment Schedule</p><div class="payment-schedule">${instRows}</div>` : ""}
+    ${payRows ? `<p class="inv-section-heading">Payment</p><div class="pay-methods">${payRows}</div>` : ""}
+    <div class="inv-footer">
+      <p>${CLIENT.business} · ${CLIENT.address}<br>${CLIENT.email}</p>
+      <p class="inv-thankyou">${thankyou}</p>
+    </div>`;
+}
+
+// ── Export ────────────────────────────────────────────────────────────
+function exportInvoice() {
+  const invNum   = val("inv-number") || "INV-XXX";
+  const currency = val("inv-currency") || "USD";
+  const content  = document.getElementById("invoice-preview").innerHTML;
+
+  const colors = Object.entries(CLIENT.colors)
+    .map(([k,v]) => `      --brand-${k}: ${v};`).join("\n");
+
+  const exportHtml = `<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Invoice ${invNum} — ${CLIENT.business}</title>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+    :root {
+${colors}
+    }
+    body { font-family:"Inter",sans-serif; background:var(--brand-bg); color:var(--brand-text); line-height:1.6; -webkit-print-color-adjust:exact; print-color-adjust:exact; }
+    .inv { max-width:840px; margin:0 auto; padding:48px 56px 72px; }
+    .inv-top{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:28px;} .inv-brand{display:flex;align-items:center;gap:13px;} .inv-brand img{width:64px;height:64px;border-radius:12px;object-fit:cover;box-shadow:0 4px 16px rgba(0,0,0,0.15);} .inv-wordmark{font-family:"Playfair Display",serif;font-size:1.05rem;font-weight:600;line-height:1.2;} .inv-tagline{font-size:0.68rem;color:var(--brand-muted);margin-top:3px;} .inv-title-block{text-align:right;} .inv-title-block h1{font-family:"Playfair Display",serif;font-size:2.4rem;font-weight:700;letter-spacing:-0.03em;line-height:1;} .inv-number{font-size:0.7rem;font-weight:700;letter-spacing:0.18em;text-transform:uppercase;color:var(--brand-accent);margin-top:4px;} .brand-rule{height:3px;border-radius:2px;margin-bottom:28px;background:linear-gradient(90deg,var(--brand-accent),var(--brand-secondary),transparent);} .inv-meta{display:grid;grid-template-columns:repeat(4,1fr);background:var(--brand-secondary);border-radius:10px;overflow:hidden;margin-bottom:24px;} .inv-meta-cell{padding:13px 16px;border-right:1px solid rgba(255,255,255,0.2);} .inv-meta-cell:last-child{border-right:none;} .inv-meta-label{font-size:0.58rem;font-weight:700;letter-spacing:0.15em;text-transform:uppercase;color:rgba(255,255,255,0.65);margin-bottom:3px;} .inv-meta-value{font-size:0.88rem;font-weight:600;color:#fff;} .inv-parties{display:grid;grid-template-columns:1fr 1fr;border:1px solid var(--brand-line);border-radius:10px;overflow:hidden;margin-bottom:28px;} .inv-party{padding:20px 22px;} .inv-party:first-child{background:var(--brand-bg);filter:brightness(0.97);border-right:1px solid var(--brand-line);} .inv-party:last-child{background:#fff;} .inv-party h3{font-size:0.58rem;font-weight:700;letter-spacing:0.18em;text-transform:uppercase;color:var(--brand-accent);margin-bottom:9px;} .inv-party p{font-size:0.84rem;line-height:1.75;} .inv-party .sub{font-size:0.78rem;color:var(--brand-muted);margin-top:5px;} .inv-table{width:100%;border-collapse:collapse;border:1px solid var(--brand-line);border-radius:10px;overflow:hidden;margin-bottom:24px;} .inv-table thead tr{background:var(--brand-secondary);} .inv-table thead th{padding:12px 16px;font-size:0.62rem;font-weight:700;letter-spacing:0.14em;text-transform:uppercase;color:rgba(255,255,255,0.9);text-align:left;} .inv-table thead th:last-child{text-align:right;} .inv-table tbody tr:nth-child(odd){background:#fff;} .inv-table tbody tr:nth-child(even){background:var(--brand-bg);} .inv-table tbody tr{border-bottom:1px solid var(--brand-line);} .inv-table tbody tr:last-child{border-bottom:none;} .inv-table td{padding:14px 16px;font-size:0.84rem;vertical-align:top;} .inv-table td:last-child{text-align:right;font-weight:600;white-space:nowrap;} .svc-name{font-weight:600;margin-bottom:3px;} .svc-desc{font-size:0.74rem;color:var(--brand-muted);line-height:1.5;} .inv-totals{display:flex;justify-content:flex-end;margin-bottom:28px;} .totals-block{width:280px;border:1px solid var(--brand-line);border-radius:10px;overflow:hidden;} .total-row{display:flex;justify-content:space-between;padding:9px 16px;font-size:0.84rem;border-bottom:1px solid var(--brand-line);background:#fff;} .total-row:last-child{border-bottom:none;border-top:1.5px solid var(--brand-accent);background:var(--brand-bg);padding:12px 16px;} .total-row span:first-child{color:var(--brand-muted);} .total-row.grand span:first-child{font-family:"Playfair Display",serif;font-size:0.95rem;font-weight:600;} .total-row.grand span:last-child{font-family:"Playfair Display",serif;font-size:1.1rem;font-weight:700;color:var(--brand-accent);} .inv-section-heading{font-size:0.6rem;font-weight:700;letter-spacing:0.18em;text-transform:uppercase;color:var(--brand-accent);margin-bottom:12px;} .payment-schedule{display:flex;flex-direction:column;gap:7px;margin-bottom:28px;} .ps-row{display:flex;justify-content:space-between;align-items:center;padding:11px 16px;background:#fff;border:1px solid var(--brand-line);border-radius:8px;font-size:0.84rem;} .ps-left{display:flex;align-items:center;gap:10px;} .ps-num{width:24px;height:24px;border-radius:50%;background:var(--brand-bg);border:1.5px solid var(--brand-accent);color:var(--brand-accent);font-size:0.65rem;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0;} .ps-label{font-weight:500;} .ps-date{font-size:0.74rem;color:var(--brand-muted);} .ps-amount{font-weight:700;} .pay-methods{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:10px;margin-bottom:36px;} .pay-method{background:#fff;border:1px solid var(--brand-line);border-radius:8px;padding:14px;} .pay-method h4{font-size:0.6rem;font-weight:700;letter-spacing:0.12em;text-transform:uppercase;margin-bottom:5px;color:var(--brand-muted);} .pay-method p{font-size:0.78rem;line-height:1.55;} .pay-method .pay-val{font-weight:600;} .pay-method img{width:80px;height:80px;display:block;margin:6px 0;} .inv-footer{border-top:1px solid var(--brand-line);padding-top:20px;display:flex;justify-content:space-between;align-items:flex-end;} .inv-footer p{font-size:0.72rem;color:var(--brand-muted);line-height:1.7;} .inv-thankyou{font-family:"Playfair Display",serif;font-size:1rem;font-style:italic;color:var(--brand-accent);}
+    @media print { @page { size:A4; margin:14mm; } body { background:white; } }
+  </style>
+</head>
+<body><div class="inv">${content}</div></body>
+</html>`;
+
+  const slug = CLIENT.business.toLowerCase().replace(/\s+/g,"-").replace(/[^a-z0-9-]/g,"");
+  const fname = invNum.toLowerCase().replace(/\s+/g,"-") + "-" + slug + ".html";
+  const blob = new Blob([exportHtml], { type:"text/html" });
+  const a = document.createElement("a");
+  a.href = URL.createObjectURL(blob);
+  a.download = fname;
+  a.click();
+}
+</script>
+</body>
+</html>
