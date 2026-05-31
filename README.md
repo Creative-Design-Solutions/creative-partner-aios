@@ -9,7 +9,7 @@ This isn't a productivity tool. It's a growing partnership that evolves with you
 ## What's inside
 
 ```
-CLAUDE.md                    ← Your AIOS identity — filled by /onboard
+CLAUDE.md                    ← Your AIOS identity — filled by /welcome
 aios-intake.md               ← 7 questions that build your setup
 connections.md               ← Registry of every tool your AIOS can reach
 EXPANSIONS.md                ← What to add as you grow
@@ -19,7 +19,7 @@ references/
   3ms-framework.md          ← The operational architecture underneath
   skills-guide.md           ← Every skill, how to trigger it, what it does
   integrations-guide.md     ← What to connect and how
-  voice.md                  ← Your writing style (filled by /onboard)
+  voice.md                  ← Your writing style (filled by /welcome)
 
 workflows/
   morning-brief.md          ← Daily session start
@@ -33,7 +33,7 @@ billing/
   invoice-generator-template.html ← White-label template for any client
   clients/                  ← Per-client generators live here
 
-context/                    ← About you (filled by /onboard)
+context/                    ← About you (filled by /welcome)
 decisions/log.md            ← Append-only decision record
 sessions/log.md             ← End-of-session continuity notes
 archives/                   ← Old stuff. Move here, don't delete.
@@ -47,11 +47,11 @@ tools/                      ← Scripts for connecting to external services
 **Option A — Guided (recommended)**
 1. Open this folder in VS Code
 2. Make sure Claude Code is installed (`npm install -g @anthropic-ai/claude-code`)
-3. Type `/onboard` — the wizard asks 7 questions and builds your setup
+3. Type `/welcome` — the wizard asks 7 questions and builds your setup
 
 **Option B — Fill it yourself**
 1. Open `aios-intake.md` and fill in your answers
-2. Run `/onboard` to scaffold your files from your answers
+2. Run `/welcome` to scaffold your files from your answers
 
 That's it. Your AIOS is ready to work.
 
@@ -61,7 +61,7 @@ That's it. Your AIOS is ready to work.
 
 | Day | What to do |
 |---|---|
-| 1 | Run `/onboard` — build your identity |
+| 1 | Run `/welcome` — build your identity |
 | 1–3 | Start each session with `/morning-coffee` |
 | 3–5 | Connect your first tool (see `references/integrations-guide.md`) |
 | 7 | Run `/audit` — score your setup and find the gaps |
@@ -75,7 +75,7 @@ Type any of these to activate:
 
 | Skill | What it does |
 |---|---|
-| `/onboard` | Build your AIOS identity |
+| `/welcome` | Build your AIOS identity |
 | `/morning-coffee` | Start the day with clarity |
 | `/audit` | Score your setup weekly |
 | `/level-up` | Ship one automation this week |

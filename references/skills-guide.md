@@ -2,18 +2,18 @@
 
 Skills are commands you type to activate a specific mode or behavior. They're the shortcuts that make your AIOS feel responsive and alive. Some run once and finish. Others stay active for a whole session.
 
-Type a skill name with a `/` in front of it — like `/onboard` or `/snag`.
+Type a skill name with a `/` in front of it — like `/welcome` or `/snag`.
 
 ---
 
 ## Setup Skills
 
-### `/onboard`
+### `/welcome`
 **What it does:** Your Day 1 ritual. Asks you 7 questions about yourself, your business, your goals, and your working style. Builds out the core files your AIOS uses to know who it's partnering with.
 
 **When to use:** First time you open the system. Re-run any time your life or business changes significantly.
 
-**Triggers:** `/onboard`, "set me up", "let's get started", "onboard me"
+**Triggers:** `/welcome`, "set me up", "let's get started", "onboard me"
 
 **Connects to:** `aios-intake.md`, `context/` folder, `connections.md`
 
@@ -176,7 +176,7 @@ Type a skill name with a `/` in front of it — like `/onboard` or `/snag`.
 
 | Skill | One-line purpose | When |
 |---|---|---|
-| `/onboard` | Build your AIOS identity | Day 1, or after major life change |
+| `/welcome` | Build your AIOS identity | Day 1, or after major life change |
 | `/audit` | Score your setup, find gaps | Weekly |
 | `/morning-coffee` | Start the day with clarity | Every session |
 | `/snag` | Search before debugging | Any error or API issue |
