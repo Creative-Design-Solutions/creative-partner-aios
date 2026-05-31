@@ -10,12 +10,16 @@ This is the source-of-truth file for your AIOS. Fill it in by typing, voice-past
 
 Your name, your passion, what you offer, and the people you love working with. One paragraph each is fine.
 
+And day-to-day, what does the actual work look like — are you mostly writing, building, designing, in conversations? What skills can Creative Partner AIOS bring that would help you the most?
+
 ```
 [Your name]
 
 [How you love serving — your passion, your craft, what lights you up about the work]
 
 [Who you serve — the kind of person or community that you're made for]
+
+[What your day-to-day work actually looks like, and where you'd love the most help]
 ```
 
 ---

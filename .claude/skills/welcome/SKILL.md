@@ -31,6 +31,10 @@ Ask one at a time. Write each answer into `aios-intake.md` as you go (so the use
 **Q1 — Who are you, how do you love serving, and who do you serve?**
 Name, passion, craft, and the people they're made for. Let them talk freely — this sets the whole tone.
 
+Then ask the follow-up: *"And day-to-day, what does the actual work look like — are you mostly writing, building, designing, in conversations? What skills can Creative Partner AIOS bring that would help you the most?"*
+
+This answer is the primary signal for skill profiling in Step 3b. Weight it heavily alongside Q3 and Q7.
+
 **Q2 — Paste 1-2 things you've written recently. Don't edit them.**
 *This is the only question with a hard rule.* Voice samples MUST be pasted, not typed mid-conversation. If the user starts typing fresh prose, stop them:
 
