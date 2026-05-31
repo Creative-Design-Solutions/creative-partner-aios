@@ -1,21 +1,21 @@
 # Creative Partner AIOS — Intake
 
-This is the source-of-truth file for your AIOS. Fill it in by typing, voice-pasting, or running `/onboard` for a guided conversation. This file is what `/onboard` reads to build your Day-1 setup.
+This is the source-of-truth file for your AIOS. Fill it in by typing, voice-pasting, or running `/welcome` for a guided conversation. This file is what `/welcome` reads to build your Day-1 setup.
 
-**Hard cap: 7 questions.** Each answerable in under 60 seconds. Don't overthink — you can edit and re-run `/onboard` any time.
+**7 questions.** Each answerable in under 60 seconds. Don't overthink — you can edit and re-run `/welcome` any time.
 
 ---
 
-## Q1 — Who are you, what do you do, who do you do it for?
+## Q1 — Who are you, how do you love serving, and who do you serve?
 
-Your name, what you offer, and who you love working with. One paragraph each is fine.
+Your name, your passion, what you offer, and the people you love working with. One paragraph each is fine.
 
 ```
 [Your name]
 
-[What you offer — your work, your craft, your service]
+[How you love serving — your passion, your craft, what lights you up about the work]
 
-[Who you do it for — the kind of person or business that lights you up]
+[Who you serve — the kind of person or community that you're made for]
 ```
 
 ---
@@ -36,7 +36,7 @@ An email, a message, a post, a note to yourself — anything that sounds like yo
 
 ## Q3 — What are your 2-3 biggest priorities for the next 90 days?
 
-Not yearly aspirations. Things that, if not done, would make you feel like you wasted the season.
+Not yearly aspirations — actual things that need to happen this season. It can be anything: a project, a relationship, a creative goal, a life change.
 
 ```
 1.
@@ -48,30 +48,32 @@ Not yearly aspirations. Things that, if not done, would make you feel like you w
 
 ## Q4 — Where does revenue land, and where is it tracked?
 
-Stripe? PayPal? Cash? A spreadsheet? Accounting software? Be honest — even if the answer is "nowhere yet."
+Don't think of this as good or bad — it's just a way to help celebrate what you deserve. How do you get paid, and is it being tracked anywhere?
 
 ```
-[How you get paid and where it's tracked]
+[How you get paid and where it's tracked — even if the answer is "nowhere yet"]
 ```
 
 ---
 
 ## Q5 — Where do you talk to people day-to-day?
 
-Email (which one)? Messaging apps? Phone? Slack? Social DMs?
+Email, messaging, phone, in person — and how do you enjoy connecting? Some people love a quick voice note. Others prefer a thoughtful email. There's no wrong answer.
 
 ```
-[Your communication tools]
+[Your communication tools and how you like to connect]
 ```
 
 ---
 
 ## Q6 — Where do your notes and important documents live?
 
-Google Drive? Notion? Dropbox? A folder on your desktop? Voice memos?
+Google Drive, Notion, Dropbox, desktop folder, voice memos, WhatsApp, a notebook — wherever things end up. And: would you benefit from something more centralized?
 
 ```
-[Where your stuff lives]
+(a) [Where your stuff currently lives]
+
+(b) [Would a more centralized system help? What would feel right?]
 ```
 
 ---
@@ -86,4 +88,4 @@ The thing you dread, keep putting off, or do manually when you know you shouldn'
 
 ---
 
-When this file is filled, run `/onboard` and the wizard will scaffold your Day-1 setup: `context/`, `references/voice.md`, `connections.md`, and your `CLAUDE.md`.
+When this file is filled, run `/welcome` and the wizard will scaffold your Day-1 setup: `context/`, `references/voice.md`, `connections.md`, and your `CLAUDE.md`.

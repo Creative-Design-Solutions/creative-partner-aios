@@ -28,30 +28,30 @@ Read `aios-intake.md`. Check which Q1-Q7 sections have content vs. `[Your answer
 
 Ask one at a time. Write each answer into `aios-intake.md` as you go (so the user can resume if interrupted).
 
-**Q1 — Who are you, what do you sell, who do you sell it to?**
-Identity, offer, ICP. One paragraph each is fine.
+**Q1 — Who are you, how do you love serving, and who do you serve?**
+Name, passion, craft, and the people they're made for. Let them talk freely — this sets the whole tone.
 
 **Q2 — Paste 1-2 things you've written recently. Don't edit them.**
-*This is the only question with a hard rule.* Voice samples MUST be pasted, not typed mid-conversation. If the user starts typing fresh prose, refuse:
+*This is the only question with a hard rule.* Voice samples MUST be pasted, not typed mid-conversation. If the user starts typing fresh prose, stop them:
 
-> *"Stop — paste it raw. If you type it here while we're talking, the sample is already shaped by our conversation. Open your last email or LinkedIn post in another tab and paste the unedited text. This is the one rule I can't bend."*
+> *"Hold on — paste it raw. If you write it here while we're talking, the sample is already shaped by our conversation. Open your last email, message, or post in another tab and paste the unedited text. This is the one rule I can't bend — it's how I learn to sound like you, not me."*
 
-Ask for two samples. One email, one post. Or two of either.
+Ask for two samples. One email, one post, one voice note transcription — anything real.
 
 **Q3 — What are your 2-3 biggest priorities for the next 90 days?**
-Quarterly priorities. Push back if they say "grow my business" — make them name a number, a deadline, or a deliverable.
+Can be anything — a project, a creative goal, a relationship, a life change. Don't push for business metrics if they give something personal. Meet them where they are.
 
-**Q4 — Where does revenue actually land, and where is it tracked?**
-Multiple answers OK. Map to Tier-1 Domain 1 (Revenue/Financials).
+**Q4 — Where does revenue land, and where is it tracked?**
+Frame it warmly: *"Don't think of this as good or bad — it's just a way to help celebrate what you deserve."* Multiple answers OK. Even "nowhere yet" is a fine answer.
 
-**Q5 — Where do you talk to customers, your team, and the outside world day-to-day?**
-Email (Gmail/Outlook), Slack/Teams/Discord, DMs. Map to Domains 2 + 4.
+**Q5 — Where do you talk to people day-to-day, and how do you enjoy connecting?**
+Email, messaging, phone, in person — and ask the second part. Some people love voice notes. Others prefer a thoughtful written message. This shapes how the AIOS communicates back.
 
-**Q6 — Where do meeting recordings, notes, and important docs live?**
-Map to Domains 6 + 7.
+**Q6 — Where do your notes and documents live? And would something more centralized help?**
+Two-part question. (a) Where things actually live now. (b) Whether they'd benefit from better organization — and if so, what would feel right to them.
 
-**Q7 — What's the one task that eats your week, and where do you currently track work?**
-Capture top_pain (used by `/level-up` Day-14) + Domain 5 (tasks).
+**Q7 — What's the one task that eats your time, and where do you track your work?**
+The dread task, the thing they keep putting off. Plus where tasks live now — or where they wish they did.
 
 Domain 3 (Calendar) is auto-inferred from Q5: Gmail → Google Cal; Outlook → Outlook Cal. Confirm in Step 3.
 
