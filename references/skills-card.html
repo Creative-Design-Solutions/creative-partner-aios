@@ -1,0 +1,404 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Skills Reference — Creative Partner AIOS</title>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;1,400&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+    :root {
+      --navy:  #1a1208;
+      --gold:  #e8a830;
+      --cream: #fdf8f2;
+      --muted: #6b5d4f;
+      --line:  rgba(200,146,42,0.18);
+      --blue:  #2e6db4;
+    }
+    body {
+      font-family: 'Inter', sans-serif;
+      background: var(--cream);
+      color: var(--navy);
+      line-height: 1.6;
+      padding: 48px 40px 80px;
+      max-width: 1100px;
+      margin: 0 auto;
+      -webkit-print-color-adjust: exact;
+      print-color-adjust: exact;
+    }
+
+    /* Header */
+    .page-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      margin-bottom: 12px;
+    }
+    .brand { font-family: 'Playfair Display', serif; font-size: 1rem; font-weight: 600; }
+    .brand em { color: var(--gold); font-style: normal; }
+    .brand-sub { font-size: 0.65rem; color: var(--muted); margin-top: 2px; }
+    .page-title { text-align: right; }
+    .page-title h1 { font-family: 'Playfair Display', serif; font-size: 2rem; font-weight: 600; letter-spacing: -0.02em; }
+    .page-title p { font-size: 0.68rem; color: var(--muted); margin-top: 3px; letter-spacing: 0.06em; text-transform: uppercase; }
+
+    .gold-rule { height: 3px; background: linear-gradient(90deg, var(--gold), #fcd96a, transparent); border-radius: 2px; margin: 20px 0 36px; }
+
+    /* Tier headings */
+    .tier-heading {
+      font-size: 0.6rem;
+      font-weight: 700;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--gold);
+      margin-bottom: 14px;
+      margin-top: 36px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .tier-heading::after { content: ''; flex: 1; height: 1px; background: var(--line); }
+    .tier-heading:first-of-type { margin-top: 0; }
+
+    /* Cards grid */
+    .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 12px; margin-bottom: 8px; }
+
+    .card {
+      background: #fff;
+      border: 1px solid var(--line);
+      border-radius: 12px;
+      padding: 16px 18px;
+      transition: box-shadow 0.15s;
+    }
+    .card:hover { box-shadow: 0 4px 18px rgba(200,146,42,0.12); }
+
+    .card-name {
+      font-size: 0.82rem;
+      font-weight: 700;
+      color: var(--navy);
+      margin-bottom: 5px;
+      font-family: 'Inter', sans-serif;
+      letter-spacing: -0.01em;
+    }
+
+    .card-desc {
+      font-size: 0.72rem;
+      color: var(--muted);
+      line-height: 1.55;
+      margin-bottom: 8px;
+    }
+
+    .card-when {
+      font-size: 0.62rem;
+      font-weight: 600;
+      color: var(--gold);
+      letter-spacing: 0.02em;
+    }
+    .card-when span { color: var(--muted); font-weight: 400; }
+
+    /* Filter bar */
+    .filter-bar {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+      margin-bottom: 32px;
+    }
+    .filter-btn {
+      padding: 6px 14px;
+      border-radius: 20px;
+      border: 1.5px solid var(--line);
+      background: #fff;
+      font-family: 'Inter', sans-serif;
+      font-size: 0.7rem;
+      font-weight: 600;
+      color: var(--muted);
+      cursor: pointer;
+      transition: all 0.15s;
+      letter-spacing: 0.02em;
+    }
+    .filter-btn:hover, .filter-btn.active {
+      background: var(--navy);
+      border-color: var(--navy);
+      color: #fff;
+    }
+
+    /* Print */
+    @media print {
+      @page { size: A4; margin: 14mm; }
+      body { background: white; padding: 0; }
+      .filter-bar { display: none; }
+      .card:hover { box-shadow: none; }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="page-header">
+    <div>
+      <div class="brand">Creative Design <em>SOUL</em>utions</div>
+      <div class="brand-sub">Creative Partner AIOS</div>
+    </div>
+    <div class="page-title">
+      <h1>Skills Reference</h1>
+      <p>Every skill — what it does, when to use it</p>
+    </div>
+  </div>
+
+  <div class="gold-rule"></div>
+
+  <!-- Filter bar -->
+  <div class="filter-bar">
+    <button class="filter-btn active" onclick="filterTier('all')">All Skills</button>
+    <button class="filter-btn" onclick="filterTier('universal')">Universal</button>
+    <button class="filter-btn" onclick="filterTier('creative')">Creative</button>
+    <button class="filter-btn" onclick="filterTier('business')">Business</button>
+    <button class="filter-btn" onclick="filterTier('builder')">Builder</button>
+    <button class="filter-btn" onclick="filterTier('growth')">Growth</button>
+  </div>
+
+  <!-- Universal -->
+  <div class="tier-heading" data-tier="universal">Universal — every client</div>
+  <div class="grid" id="grid-universal">
+
+    <div class="card" data-tier="universal">
+      <div class="card-name">/welcome</div>
+      <div class="card-desc">Day 1 setup wizard. Asks 7 questions, builds your AIOS identity, generates your personal skills guide, and scaffolds all your context files.</div>
+      <div class="card-when">Best when: <span>you've just cloned the kit and are getting started</span></div>
+    </div>
+
+    <div class="card" data-tier="universal">
+      <div class="card-name">/morning-coffee</div>
+      <div class="card-desc">Session start ritual. Reads recent changes, loads memory, and gives you a calm oriented brief before you touch anything.</div>
+      <div class="card-when">Best when: <span>opening any work session</span></div>
+    </div>
+
+    <div class="card" data-tier="universal">
+      <div class="card-name">/snag</div>
+      <div class="card-desc">Searches the web before touching any code. Finds known issues, API changes, and breaking changes in seconds.</div>
+      <div class="card-when">Best when: <span>something breaks unexpectedly or an API stops working</span></div>
+    </div>
+
+    <div class="card" data-tier="universal">
+      <div class="card-name">/audit</div>
+      <div class="card-desc">Scores your AIOS against the Four Cs — Connection, Consistency, Capability, Creativity. Top 3 fixes ranked by leverage.</div>
+      <div class="card-when">Best when: <span>Day 7, then weekly — watch the score climb</span></div>
+    </div>
+
+    <div class="card" data-tier="universal">
+      <div class="card-name">/level-up</div>
+      <div class="card-desc">Weekly growth ritual. Finds one automation worth building, scopes it, and ships it. One run = one shipped artifact.</div>
+      <div class="card-when">Best when: <span>every Friday — this is how the system compounds</span></div>
+    </div>
+
+    <div class="card" data-tier="universal">
+      <div class="card-name">/skill-builder</div>
+      <div class="card-desc">Teaches your AIOS a new behavior. When you find yourself giving the same instructions session after session — build a skill.</div>
+      <div class="card-when">Best when: <span>you've given the same instructions 3+ times</span></div>
+    </div>
+
+    <div class="card" data-tier="universal">
+      <div class="card-name">/file-organizer</div>
+      <div class="card-desc">Intelligently organizes files and folders — finds duplicates, suggests better structures, cleans up the digital workspace.</div>
+      <div class="card-when">Best when: <span>folders feel chaotic or hard to navigate</span></div>
+    </div>
+
+    <div class="card" data-tier="universal">
+      <div class="card-name">/meeting-insights-analyzer</div>
+      <div class="card-desc">Analyzes meeting transcripts for communication patterns — filler words, conflict avoidance, listening gaps, leadership moments.</div>
+      <div class="card-when">Best when: <span>you have a transcript and want honest feedback on how you showed up</span></div>
+    </div>
+
+    <div class="card" data-tier="universal">
+      <div class="card-name">/smooth-operator</div>
+      <div class="card-desc">Logs a UX improvement — captures what changed, why it feels better, and the principle behind it for future reference.</div>
+      <div class="card-when">Best when: <span>after fixing something clunky — save the lesson</span></div>
+    </div>
+
+  </div>
+
+  <!-- Creative -->
+  <div class="tier-heading" data-tier="creative">Creative — designers, writers, visual thinkers</div>
+  <div class="grid" id="grid-creative">
+
+    <div class="card" data-tier="creative">
+      <div class="card-name">/design-master</div>
+      <div class="card-desc">Full creative design mode — websites, UI, brand, emails, logos, identity, SVG assets, design tokens, and AI image generation. Stays active all session.</div>
+      <div class="card-when">Best when: <span>starting any visual or brand work session</span></div>
+    </div>
+
+    <div class="card" data-tier="creative">
+      <div class="card-name">/brainstorming</div>
+      <div class="card-desc">Explores intent, requirements, and design before any implementation. Gets alignment on what you're actually making before a single line is written.</div>
+      <div class="card-when">Best when: <span>starting something new and the direction isn't fully clear</span></div>
+    </div>
+
+    <div class="card" data-tier="creative">
+      <div class="card-name">/canvas-design</div>
+      <div class="card-desc">Creates beautiful visual art — posters, prints, illustrations — as PNG or PDF. Original designs, never copying existing artists.</div>
+      <div class="card-when">Best when: <span>you need a visual artifact, not a website or UI</span></div>
+    </div>
+
+    <div class="card" data-tier="creative">
+      <div class="card-name">/content-research-writer</div>
+      <div class="card-desc">Research-backed content writing — citations, hooks, outlines, real-time feedback on each section. Collaborative writing partner.</div>
+      <div class="card-when">Best when: <span>writing anything that needs research behind it</span></div>
+    </div>
+
+    <div class="card" data-tier="creative">
+      <div class="card-name">/theme-factory</div>
+      <div class="card-desc">Applies a visual theme to any artifact — slides, docs, landing pages. 10 pre-set themes or generate a custom one on the fly.</div>
+      <div class="card-when">Best when: <span>a deliverable needs a consistent visual identity</span></div>
+    </div>
+
+    <div class="card" data-tier="creative">
+      <div class="card-name">/image-enhancer</div>
+      <div class="card-desc">Improves image quality — resolution, sharpness, clarity. Good for screenshots, photos for presentations, or images for social media.</div>
+      <div class="card-when">Best when: <span>an image is too low-quality to use as-is</span></div>
+    </div>
+
+    <div class="card" data-tier="creative">
+      <div class="card-name">/brand-guidelines</div>
+      <div class="card-desc">Applies brand colors and typography consistently to any artifact. Use when visual formatting and design standards need to be enforced.</div>
+      <div class="card-when">Best when: <span>building client-facing materials that need to stay on-brand</span></div>
+    </div>
+
+  </div>
+
+  <!-- Business -->
+  <div class="tier-heading" data-tier="business">Business — office, admin, client work</div>
+  <div class="grid" id="grid-business">
+
+    <div class="card" data-tier="business">
+      <div class="card-name">/invoice-organizer</div>
+      <div class="card-desc">Organizes invoices and receipts for tax prep — reads files, extracts key info, renames consistently, sorts into folders.</div>
+      <div class="card-when">Best when: <span>tax season or when billing files are scattered</span></div>
+    </div>
+
+    <div class="card" data-tier="business">
+      <div class="card-name">/internal-comms</div>
+      <div class="card-desc">Writes internal communications — status reports, leadership updates, newsletters, FAQs, incident reports, project updates.</div>
+      <div class="card-when">Best when: <span>you need to communicate something to a team or organization</span></div>
+    </div>
+
+    <div class="card" data-tier="business">
+      <div class="card-name">/changelog-generator</div>
+      <div class="card-desc">Creates user-facing changelogs from git commits — turns technical commit history into clear, customer-friendly release notes.</div>
+      <div class="card-when">Best when: <span>shipping an update and clients need to know what changed</span></div>
+    </div>
+
+    <div class="card" data-tier="business">
+      <div class="card-name">/document-skills</div>
+      <div class="card-desc">Work with Word docs, PDFs, PowerPoint, and Excel — create, edit, fill forms, extract data, and produce professional office documents.</div>
+      <div class="card-when">Best when: <span>a deliverable needs to be in an Office format</span></div>
+    </div>
+
+  </div>
+
+  <!-- Builder -->
+  <div class="tier-heading" data-tier="builder">Builder — developers, system builders</div>
+  <div class="grid" id="grid-builder">
+
+    <div class="card" data-tier="builder">
+      <div class="card-name">/writing-plans</div>
+      <div class="card-desc">Turns a spec or requirement into a detailed multi-step implementation plan before touching code.</div>
+      <div class="card-when">Best when: <span>the build has multiple moving parts or spans more than one session</span></div>
+    </div>
+
+    <div class="card" data-tier="builder">
+      <div class="card-name">/executing-plans</div>
+      <div class="card-desc">Executes a written plan with review checkpoints in a clean session. Pairs directly with /writing-plans.</div>
+      <div class="card-when">Best when: <span>you have a finished plan and are ready to build</span></div>
+    </div>
+
+    <div class="card" data-tier="builder">
+      <div class="card-name">/systematic-debugging</div>
+      <div class="card-desc">Structured root-cause tracing before any fix is proposed. Fixes that stick, not patches that move the problem.</div>
+      <div class="card-when">Best when: <span>something is broken and you don't know why</span></div>
+    </div>
+
+    <div class="card" data-tier="builder">
+      <div class="card-name">/verification-before-completion</div>
+      <div class="card-desc">Requires running verification commands before claiming work is done. Evidence before assertions — always.</div>
+      <div class="card-when">Best when: <span>you think something is fixed — prove it before moving on</span></div>
+    </div>
+
+    <div class="card" data-tier="builder">
+      <div class="card-name">/webapp-testing</div>
+      <div class="card-desc">Tests local web apps using Playwright — verifies frontend functionality, captures screenshots, views browser logs.</div>
+      <div class="card-when">Best when: <span>you need to verify UI behavior before shipping</span></div>
+    </div>
+
+    <div class="card" data-tier="builder">
+      <div class="card-name">/artifacts-builder</div>
+      <div class="card-desc">Builds complex multi-component HTML artifacts with React, Tailwind, and shadcn/ui — state management, routing, full component systems.</div>
+      <div class="card-when">Best when: <span>a deliverable needs interactive components, not just static HTML</span></div>
+    </div>
+
+    <div class="card" data-tier="builder">
+      <div class="card-name">/mcp-builder</div>
+      <div class="card-desc">Guides building MCP servers that connect Claude to external APIs and services — Python (FastMCP) or Node/TypeScript.</div>
+      <div class="card-when">Best when: <span>wiring Claude into a new tool or service</span></div>
+    </div>
+
+  </div>
+
+  <!-- Growth -->
+  <div class="tier-heading" data-tier="growth">Growth — superpowers, frameworks</div>
+  <div class="grid" id="grid-growth">
+
+    <div class="card" data-tier="growth">
+      <div class="card-name">/superpowers</div>
+      <div class="card-desc">Activates the full skill system at the start of a session. Ensures Claude uses the right skill before responding to anything.</div>
+      <div class="card-when">Best when: <span>opening a complex or multi-step project session</span></div>
+    </div>
+
+    <div class="card" data-tier="growth">
+      <div class="card-name">/dispatching-parallel-agents</div>
+      <div class="card-desc">Runs independent tasks simultaneously across multiple agents. Big time saver on complex builds with parallel workstreams.</div>
+      <div class="card-when">Best when: <span>two or more tasks don't depend on each other</span></div>
+    </div>
+
+    <div class="card" data-tier="growth">
+      <div class="card-name">/skill-creator</div>
+      <div class="card-desc">Guides creating new skills following best practices — scaffolds, validates, and packages skills for reuse.</div>
+      <div class="card-when">Best when: <span>building a skill from scratch and want it done right</span></div>
+    </div>
+
+    <div class="card" data-tier="growth">
+      <div class="card-name">/writing-skills</div>
+      <div class="card-desc">Creates and edits skills — applies Anthropic best practices, tests before deployment, ensures quality.</div>
+      <div class="card-when">Best when: <span>refining an existing skill or writing a new one carefully</span></div>
+    </div>
+
+    <div class="card" data-tier="growth">
+      <div class="card-name">GSD Core</div>
+      <div class="card-desc">Spec-driven development system that prevents context rot on long projects. Install once per project: npx @opengsd/gsd-core@latest — then use /gsd-new-project, /gsd-next, /gsd-ship.</div>
+      <div class="card-when">Best when: <span>day one of a complex project — seatbelt, not airbag</span></div>
+    </div>
+
+  </div>
+
+  <script>
+    function filterTier(tier) {
+      document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+      event.target.classList.add('active');
+
+      document.querySelectorAll('.card').forEach(card => {
+        if (tier === 'all' || card.dataset.tier === tier) {
+          card.style.display = 'block';
+        } else {
+          card.style.display = 'none';
+        }
+      });
+
+      document.querySelectorAll('.tier-heading').forEach(h => {
+        if (tier === 'all' || h.dataset.tier === tier) {
+          h.style.display = 'flex';
+        } else {
+          h.style.display = 'none';
+        }
+      });
+    }
+  </script>
+
+</body>
+</html>

@@ -85,25 +85,19 @@ After scaffolding, read Q1, Q3, and Q7 and determine which skill tiers apply. Th
 
 Assign all tiers that fit — most people get Universal + 1 or 2 others. Someone can be Creative AND Builder.
 
-**Write `references/your-skills.md` in this format:**
+**Generate two files:**
 
-```markdown
-# Your Skills — [Name]
+**1. `references/your-skills.md`** — plain text index, used by the AIOS internally.
 
-These are the skills most relevant to how you work. Type any of them in Claude Code to activate.
+**2. `references/your-skills.html`** — a beautiful card-based quick reference the client can open in any browser. Model it on `references/skills-card.html` but only include their assigned skills. Use the same card style (name, description, "Best when:" line in gold). Include a link to `skills-card.html` at the bottom for the full library.
 
-## Your everyday skills
-[Universal skills — short description + trigger for each]
+Structure the HTML with:
+- A warm header: "Your Skills — [Name]" + "Made for how you work"
+- Their everyday skills section first
+- Their tier-specific skills section(s) next
+- A footer card linking to the full `skills-card.html`
 
-## Your [Creative / Business / Builder] skills
-[Tier-specific skills — short description + trigger for each]
-
----
-
-## Full library
-Your AIOS has [total count] skills installed. As you grow, explore them in `.claude/skills/`.
-A full reference is in `references/skills-guide.md`.
-```
+Keep the same CDS aesthetic — cream background, gold accents, Playfair + Inter fonts, card grid.
 
 Keep descriptions warm and plain — no jargon. Write them the way you'd explain a skill to a friend.
 
